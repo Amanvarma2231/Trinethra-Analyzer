@@ -266,7 +266,8 @@ async def get_dashboard_stats():
         return {"total": 0, "avg_score": 0, "top_kpi": "N/A"}
     
     total = len(history)
-    avg_score = sum(item['score'] for item in history) / total
+    scores = [item['score'] for item in history if item['score'] is not None]
+    avg_score = sum(scores) / len(scores) if scores else 0
     
     # Simple top KPI logic
     kpi_counts = {}

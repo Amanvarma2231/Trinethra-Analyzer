@@ -3,7 +3,9 @@
  * Version: 2.1 (Professional Grade)
  */
 
-const API_BASE_URL = 'http://localhost:8005';
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost:8005' 
+    : 'https://trinethra-analyzer-backend.onrender.com'; // Adjust this to your actual backend URL if different
 let currentAnalysisId = null;
 let isAnalyzing = false;
 
@@ -157,11 +159,31 @@ async function loadStats() {
     try {
         const response = await fetch(`${API_BASE_URL}/stats`);
         const data = await response.json();
-        elements.totalAnalyzed.textContent = data.total || 0;
-        elements.avgScore.textContent = data.avg_score || '0.0';
+        
+        animateCounter(elements.totalAnalyzed, parseInt(elements.totalAnalyzed.textContent) || 0, data.total || 0);
+        animateCounter(elements.avgScore, parseFloat(elements.avgScore.textContent) || 0, data.avg_score || 0, 1);
     } catch (e) {
         console.error('Failed to load stats:', e);
     }
+}
+
+function animateCounter(el, start, end, decimals = 0) {
+    const duration = 1000;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = start + (end - start) * progress;
+        
+        el.textContent = current.toFixed(decimals);
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+    
+    requestAnimationFrame(update);
 }
 
 async function runAnalysis() {
