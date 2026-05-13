@@ -1,0 +1,187 @@
+{
+  "rubric": {
+    "version": "1.0",
+    "scale": {
+      "min": 1,
+      "max": 10,
+      "description": "Fellow Performance Assessment Scale"
+    },
+    "levels": [
+      {
+        "score_range": [1, 2],
+        "label": "Actively Harmful",
+        "description": "Fellow creates problems, unreliable, negative impact on operations",
+        "characteristics": [
+          "Misses deadlines consistently",
+          "Work requires significant rework",
+          "Creates conflicts with team members",
+          "No visible positive contribution",
+          "May have caused operational setbacks"
+        ],
+        "examples": [
+          "Fellow promised a report by Monday, still hasn't delivered by Friday",
+          "Team members complain about Fellow's attitude",
+          "Process implemented by Fellow actually slowed down production"
+        ]
+      },
+      {
+        "score_range": [3, 4],
+        "label": "Below Expectations",
+        "description": "Fellow struggles with basics, needs constant supervision and direction",
+        "characteristics": [
+          "Completes work but often late or incomplete",
+          "Needs frequent reminders and follow-ups",
+          "Quality is inconsistent",
+          "Struggles to work independently",
+          "Shows effort but lacks effectiveness"
+        ],
+        "examples": [
+          "Fellow needs to be told what to do each day",
+          "Work is done but often needs corrections",
+          "Shows up on time but doesn't take initiative"
+        ]
+      },
+      {
+        "score_range": [5, 6],
+        "label": "Meets Expectations",
+        "description": "Fellow is reliable, completes assigned work, professional conduct",
+        "characteristics": [
+          "Completes assigned tasks on time",
+          "Work quality is acceptable",
+          "Professional and punctual",
+          "Follows instructions well",
+          "Integrated with team without issues"
+        ],
+        "examples": [
+          "Fellow does what is asked, when it's asked",
+          "Reports are accurate and submitted on time",
+          "Team finds Fellow helpful and cooperative"
+        ]
+      },
+      {
+        "score_range": [7, 8],
+        "label": "Exceeds Expectations",
+        "description": "Fellow takes initiative, improves systems, creates visible business impact",
+        "characteristics": [
+          "Identifies and solves problems proactively",
+          "Creates or improves processes",
+          "Delivers beyond assigned scope",
+          "Team relies on Fellow's expertise",
+          "Demonstrates measurable impact on KPIs"
+        ],
+        "examples": [
+          "Fellow identified a bottleneck and redesigned the workflow",
+          "Production team now follows Fellow's tracking system",
+          "Supervisor can point to specific improvements made by Fellow"
+        ]
+      },
+      {
+        "score_range": [9, 10],
+        "label": "Exceptional",
+        "description": "Fellow transforms operations, builds lasting systems, exceptional leadership",
+        "characteristics": [
+          "Creates systems that work without Fellow present",
+          "Drives measurable business transformation",
+          "Mentors and upskills team members",
+          "Influences strategic decisions",
+          "Impact continues after engagement ends"
+        ],
+        "examples": [
+          "Fellow built an inventory system the company still uses",
+          "OTD improved from 60% to 85% under Fellow's guidance",
+          "Team members have grown into new roles because of Fellow's mentoring"
+        ]
+      }
+    ],
+    "assessment_dimensions": [
+      {
+        "name": "Reliability & Consistency",
+        "description": "Does the Fellow complete work on time? Can the supervisor depend on them?",
+        "weight": "high",
+        "indicators": [
+          "Deadline adherence",
+          "Attendance and punctuality",
+          "Consistency of output",
+          "Follow-through on commitments"
+        ]
+      },
+      {
+        "name": "Work Quality",
+        "description": "Are deliverables high quality? Do they need rework?",
+        "weight": "high",
+        "indicators": [
+          "Accuracy of work",
+          "Attention to detail",
+          "Professional presentation",
+          "Rework frequency"
+        ]
+      },
+      {
+        "name": "Initiative & Ownership",
+        "description": "Does the Fellow take charge or wait for instructions?",
+        "weight": "high",
+        "indicators": [
+          "Self-directed work",
+          "Problem identification",
+          "Going beyond assigned tasks",
+          "Accountability for outcomes"
+        ]
+      },
+      {
+        "name": "Systems Building",
+        "description": "Is the Fellow creating sustainable processes or just doing tasks?",
+        "weight": "critical",
+        "indicators": [
+          "Process documentation",
+          "Standardization efforts",
+          "Knowledge transfer",
+          "Sustainability of solutions"
+        ]
+      },
+      {
+        "name": "Team Integration",
+        "description": "How does the existing team respond to the Fellow?",
+        "weight": "medium",
+        "indicators": [
+          "Team feedback",
+          "Collaboration quality",
+          "Cultural fit",
+          "Relationship building"
+        ]
+      },
+      {
+        "name": "Communication",
+        "description": "Is the Fellow clear, proactive, and professional in communication?",
+        "weight": "medium",
+        "indicators": [
+          "Clarity of updates",
+          "Proactive reporting",
+          "Documentation quality",
+          "Meeting effectiveness"
+        ]
+      },
+      {
+        "name": "Problem-Solving",
+        "description": "Can the Fellow diagnose issues and propose solutions?",
+        "weight": "high",
+        "indicators": [
+          "Root cause analysis",
+          "Solution quality",
+          "Implementation success",
+          "Adaptability to challenges"
+        ]
+      },
+      {
+        "name": "Business Impact",
+        "description": "Is Fellow's work connected to measurable business outcomes?",
+        "weight": "critical",
+        "indicators": [
+          "KPI improvement",
+          "Cost savings",
+          "Efficiency gains",
+          "Revenue impact"
+        ]
+      }
+    ]
+  }
+}

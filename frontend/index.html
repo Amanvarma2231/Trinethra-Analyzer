@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trinethra | Supervisor Feedback Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                TRINETHRA <span>AI</span>
+            </div>
+            
+            <div class="header-actions">
+                <button id="themeToggle" class="btn btn-secondary" title="Switch Theme">
+                    <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <div class="status-group">
+                    <div class="dot" id="statusDot"></div>
+                    <span id="statusText">Connecting...</span>
+                </div>
+                <button id="exportCsvBtn" class="btn btn-secondary" title="Export all history to CSV">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Data Export
+                </button>
+            </div>
+
+            <div class="user-actions">
+                <select id="modelSelect" class="btn btn-secondary">
+                    <option value="llama3.2">Llama 3.2</option>
+                    <option value="mistral">Mistral</option>
+                </select>
+                <button id="analyzeButton" class="btn btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Run Analysis
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- AI Thought Bubble -->
+            <div id="aiBubble" class="ai-bubble hidden">
+                <div class="bubble-icon">🧠</div>
+                <div id="bubbleText" class="bubble-content">AI is analyzing your tone...</div>
+            </div>
+
+            <!-- Trend Summary Card with Sparkline -->
+            <div id="trendCard" class="trend-card hidden">
+                <div class="card-title">Fellow Intelligence</div>
+                <div id="trendContent"></div>
+                <svg id="trendSparkline" class="sparkline" viewBox="0 0 100 30"></svg>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="dashboard-stats" id="dashboardStats">
+                    <div class="stat-item">
+                        <div class="stat-val" id="totalAnalyzed">0</div>
+                        <div class="stat-label">Analyzed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-val" id="avgScore">0.0</div>
+                        <div class="stat-label">Avg Score</div>
+                    </div>
+                </div>
+                <button id="newAnalysisBtn" class="btn btn-secondary" style="width: 100%; margin-top: 1rem;">+ New Analysis</button>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="search-box">
+                    <input type="text" id="historySearch" placeholder="Search history (Fellow/Score)...">
+                </div>
+                <h3 class="card-title" style="margin-top: 1rem;">History</h3>
+                <div id="historyList" class="history-list">
+                    <!-- History items will be injected here -->
+                    <div class="text-dim" style="font-size: 0.8rem; text-align: center; padding: 1rem;">No history yet</div>
+                </div>
+            </div>
+
+            <div style="margin-top: auto; padding: 1rem 0;">
+                <button id="helpBtn" class="btn btn-secondary" style="width: 100%; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span>📧</span> Help & Support
+                </button>
+                <div style="margin-top: 1rem; font-size: 0.7rem; color: var(--text-dim);">
+                    v2.2 Production | Aman Varma
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="content">
+            <!-- Left Pane: Input -->
+            <section class="pane" id="inputPane">
+                <div class="pane-header">
+                    <span class="card-title">Supervisor Transcript</span>
+                    <div class="pane-actions">
+                        <button id="voiceBtn" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.7rem;" title="Dictate feedback">🎤 Voice Input</button>
+                        <button id="sampleBtn" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.7rem;">Load Sample</button>
+                        <button id="clearBtn" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.7rem;">Clear</button>
+                    </div>
+                </div>
+                <div class="pane-content" style="padding: 0;">
+                    <textarea id="transcriptInput" class="transcript-area" placeholder="Paste the supervisor call transcript here... (Min 50 characters)" style="padding: 1.5rem;"></textarea>
+                </div>
+                <div class="pane-footer" style="padding: 0.5rem 1rem; background: var(--bg-card); font-size: 0.8rem; color: var(--text-dim); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                    <span id="charCount">0 characters</span>
+                    <div class="live-sentiment-strip">
+                        <span style="font-size: 0.6rem; margin-right: 5px;">LIVE TONE:</span>
+                        <div class="sentiment-meter-mini">
+                            <div id="liveMeterBar" class="meter-bar"></div>
+                        </div>
+                    </div>
+                    <span id="autoSaveStatus" style="font-size: 0.6rem; opacity: 0.5;"></span>
+                </div>
+            </section>
+
+            <!-- Right Pane: Analysis -->
+            <section class="pane" id="outputPane">
+                <div class="pane-header">
+                    <span class="card-title">AI Analysis Results</span>
+                    <div id="resultActions" class="hidden pane-actions">
+                        <button id="copyAnalysisBtn" class="btn btn-secondary" style="padding: 4px 8px; font-size: 0.7rem;">Copy Text</button>
+                        <button id="exportPdfBtn" class="btn btn-primary" style="padding: 4px 8px; font-size: 0.7rem;">Export PDF</button>
+                    </div>
+                </div>
+                
+                <div class="pane-content" id="resultsArea">
+                    <!-- Welcome / Command Center State -->
+                    <div id="emptyState" class="command-center">
+                        <div class="welcome-header">
+                            <h2 id="welcomeGreeting">Ready to Analyze</h2>
+                            <p class="text-dim">Trinethra AI is standing by for your next supervisor transcript.</p>
+                        </div>
+
+                        <div class="quick-grid">
+                            <div class="quick-card" onclick="loadSample()">
+                                <div class="icon">🚀</div>
+                                <h4>Try Demo</h4>
+                                <p>Load a professional sample transcript.</p>
+                            </div>
+                            <div class="quick-card" id="resumeLastBtn">
+                                <div class="icon">🕒</div>
+                                <h4>Resume Last</h4>
+                                <p>Open your most recent analysis session.</p>
+                            </div>
+                        </div>
+
+                        <div class="pro-tips-box">
+                            <div class="card-title" style="font-size: 0.7rem;">PRO TIP OF THE DAY</div>
+                            <p id="proTipText">"Encourage supervisors to mention specific numbers like breakdown time or percentage growth for accurate KPI mapping."</p>
+                        </div>
+
+                        <div class="guide-steps">
+                            <div class="step">
+                                <span class="step-num">1</span>
+                                <span>Paste or Dictate Transcript</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-num">2</span>
+                                <span>Select AI Model (Llama/Mistral)</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-num">3</span>
+                                <span>Get 100% Data-Driven Result</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loading State -->
+                    <div id="loadingState" class="loading-overlay hidden">
+                        <div class="logo">TRINETHRA AI</div>
+                        <div id="loadingMessage" style="font-weight: 600;">Analyzing behavioral patterns...</div>
+                        <div class="progress-container">
+                            <div id="progressBar" class="progress-bar"></div>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-dim);">This typically takes 15-25 seconds</div>
+                    </div>
+
+                    <!-- Results Content -->
+                    <div id="resultsContent" class="hidden">
+                        <!-- Score Card -->
+                        <div class="card">
+                            <div class="card-title">Rubric Assessment</div>
+                            <div class="score-display">
+                                <div id="scoreCircle" class="score-circle">
+                                    <svg viewBox="0 0 36 36" class="circular-chart">
+                                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <path id="scoreStroke" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                        <text x="18" y="20.35" class="percentage" id="scoreValue">--</text>
+                                    </svg>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h3 id="levelText" style="margin-bottom: 0.5rem; color: var(--primary);">--</h3>
+                                    <p id="justificationText" class="text-dim" style="font-size: 0.9rem;" contenteditable="true">--</p>
+                                    <div id="confidenceBadge" class="confidence-badge" style="margin-top: 1rem; display: inline-block;">--</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evidence Section -->
+                        <div class="card">
+                            <div class="card-title">Behavioral Sentiment & Evidence</div>
+                            <div class="sentiment-container">
+                                <div id="sentimentChart" class="sentiment-chart"></div>
+                                <div id="sentimentSummary" class="text-dim" style="font-size: 0.8rem;"></div>
+                            </div>
+                            <div id="evidenceList" style="margin-top: 1rem;"></div>
+                        </div>
+
+                        <!-- KPI Mapping -->
+                        <div class="card">
+                            <div class="card-title">Business KPI Mapping</div>
+                            <div id="kpiList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
+                        </div>
+
+                        <!-- Gaps & Follow-up -->
+                        <div class="card" style="border-color: var(--warning);">
+                            <div class="card-title">Gap Analysis & Next Steps</div>
+                            <h4 style="margin-bottom: 10px; font-size: 0.9rem;">Identified Gaps:</h4>
+                            <div id="gapList" style="margin-bottom: 1.5rem;"></div>
+                            
+                            <h4 style="margin-bottom: 10px; font-size: 0.9rem;">Suggested Follow-up:</h4>
+                            <div id="questionList"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast" style="position: fixed; bottom: 2rem; right: 2rem; z-index: 1000;"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
